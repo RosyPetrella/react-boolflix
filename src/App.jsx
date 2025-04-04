@@ -16,12 +16,23 @@
 import { useState } from "react";
 
 function App() {
-  // Stato per memorizzare il valore dell'input
+  // per memorizzare il valore dell'input
   const [query, setQuery] = useState("");
+  const [movies, setMovies] = useState([]); // per salvare i film trovati
+
+  const searchMovies = () => {
+    const api_key = import.meta.env.VITE_MOVIE_DB_API_KEY; // 👈recupera la chiave dal file .env
+    const base_movies_api_url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${query}`; // 👈usa il template literal per passare la chiave API
+
+    fetch(base_movies_api_url)
+      .then((res) => res.json())
+      .then((data) => setMovies(data.results))
+      .catch((error) => console.error("Errore nella ricerca:", error));
+  };
 
   return (
     <div>
-      <h1>React Boolflix</h1>
+      <h1>Boolflix</h1>
       <div>
         {/* nome film */}
         <input
@@ -30,7 +41,22 @@ function App() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button onClick={() => console.log("Cerco:", query)}>Cerca</button>
+        <button onClick={searchMovies}>Cerca</button>
+      </div>
+
+      <div>
+        {Array.isArray(movies) && movies.length > 0 ? (
+          movies.map((movie) => (
+            <div key={movie.id}>
+              <h2>{movie.title}</h2>
+              <p>Titolo Originale: {movie.original_title}</p>
+              <p>Lingua: {movie.original_language}</p>
+              <p>Voto: {movie.vote_average}</p>
+            </div>
+          ))
+        ) : (
+          <p>Nessun film trovato.</p>
+        )}
       </div>
     </div>
   );
