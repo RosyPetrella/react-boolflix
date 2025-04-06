@@ -24,14 +24,21 @@ function App() {
   // per memorizzare il valore dell'input
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]); // per salvare i film trovati
+  const [series, setSeries] = useState([]);
 
-  const searchMovies = () => {
+  const search = () => {
     const api_key = import.meta.env.VITE_MOVIE_DB_API_KEY; // 👈recupera la chiave dal file .env
-    const base_movies_api_url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${query}`; // 👈usa il template literal per passare la chiave API
+    const base_movies_api_url = `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${query}`;
+    const base_series_api_url = `https://api.themoviedb.org/3/search/tv?api_key=${api_key}&query=${query}`;
 
     fetch(base_movies_api_url)
       .then((res) => res.json())
       .then((data) => setMovies(data.results))
+      .catch((error) => console.error("Errore nella ricerca:", error));
+
+    fetch(base_series_api_url)
+      .then((res) => res.json())
+      .then((data) => setSeries(data.results))
       .catch((error) => console.error("Errore nella ricerca:", error));
   };
 
@@ -60,11 +67,11 @@ function App() {
         {/* nome film */}
         <input
           type="text"
-          placeholder="Cerca un film..."
+          placeholder="Cerca un film o una serie..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button onClick={searchMovies}>Cerca</button>
+        <button onClick={search}>Cerca</button>
       </div>
 
       <div>
@@ -82,6 +89,24 @@ function App() {
           ))
         ) : (
           <p>Nessun film trovato.</p>
+        )}
+      </div>
+
+      <div>
+        {Array.isArray(series) && series.length > 0 ? (
+          series.map((serie) => (
+            <div key={serie.id}>
+              <h2>{serie.name}</h2>
+              <p>Titolo Originale: {serie.orginal_name}</p>
+              <p>
+                Lingua: {getFlag(serie.original_language)} (
+                {serie.original_language})
+              </p>
+              <p>Voto: {serie.vote_average}</p>
+            </div>
+          ))
+        ) : (
+          <p>Nessuna serie trovata.</p>
         )}
       </div>
     </div>
