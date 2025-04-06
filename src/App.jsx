@@ -1,24 +1,5 @@
-// Milestone 0:
-// Progettare la struttura del global state sulla linea degli esercizi svolti nei giorni
-// precedenti.
-
-// Milestone 1:
-// Creare un layout base con una searchbar (una input e un button) in cui possiamo
-// scrivere completamente o parzialmente il nome di un film. Possiamo, cliccando il
-// bottone, cercare sull’API tutti i film che contengono ciò che ha scritto l’utente.
-// Vogliamo dopo la risposta dell’API visualizzare a schermo i seguenti valori per ogni
-// film trovato:
-// 1.  Titolo
-// 2.  Titolo Originale
-// 3.  Lingua
-// 4.  Voto
-
-// Milestone 2:
-// Trasformiamo la stringa statica della lingua in una vera e propria bandiera della
-// nazione corrispondente, gestendo il caso in cui non abbiamo la bandiera della
-// nazione ritornata dall’API (le flag non ci sono in FontAwesome).
-
 import { useState } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App() {
   // per memorizzare il valore dell'input
@@ -64,6 +45,36 @@ function App() {
     return path ? baseImageUrl + path : null; // restituisce l'URL completo
   };
 
+  // Funzione per trasformare il voto da 1-10 a 1-5
+  const convertRating = (rating) => {
+    return Math.ceil(rating / 2); // Arrotonda per eccesso
+  };
+
+  // Funzione per mostrare le stelle
+  const renderStars = (rating) => {
+    const totalStars = 5;
+    const filledStars = convertRating(rating); // Ottieni il numero di stelle piene
+    const stars = [];
+
+    for (let i = 1; i <= totalStars; i++) {
+      if (i <= filledStars) {
+        stars.push(
+          <i
+            key={i}
+            className="bi bi-star-fill"
+            style={{ color: "#FFD700" }}
+          ></i>
+        ); // Stella piena
+      } else {
+        stars.push(
+          <i key={i} className="bi bi-star" style={{ color: "#FFD700" }}></i>
+        ); // Stella vuota
+      }
+    }
+
+    return stars;
+  };
+
   return (
     <div>
       <h1>Boolflix</h1>
@@ -92,7 +103,7 @@ function App() {
                 Lingua: {getFlag(movie.original_language)} (
                 {movie.original_language})
               </p>
-              <p>Voto: {movie.vote_average}</p>
+              <p>Voto: {renderStars(movie.vote_average)} </p>
             </div>
           ))
         ) : (
@@ -115,7 +126,7 @@ function App() {
                 Lingua: {getFlag(serie.original_language)} (
                 {serie.original_language})
               </p>
-              <p>Voto: {serie.vote_average}</p>
+              <p>Voto: {renderStars(serie.vote_average)} </p>
             </div>
           ))
         ) : (
