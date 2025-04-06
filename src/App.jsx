@@ -53,18 +53,21 @@ function App() {
     ko: "🇰🇷",
     ru: "🇷🇺",
     hi: "🇮🇳",
-    // Aggiungi altre lingue se vuoi
   };
 
   function getFlag(langCode) {
     return flags[langCode] || "🏳️"; // bandiera bianca se non trovata
   }
 
+  const getImageUrl = (path) => {
+    const baseImageUrl = "https://image.tmdb.org/t/p/w342"; // dimensione dell'immagine (w342)
+    return path ? baseImageUrl + path : null; // restituisce l'URL completo
+  };
+
   return (
     <div>
       <h1>Boolflix</h1>
       <div>
-        {/* nome film */}
         <input
           type="text"
           placeholder="Cerca un film o una serie..."
@@ -78,6 +81,11 @@ function App() {
         {Array.isArray(movies) && movies.length > 0 ? (
           movies.map((movie) => (
             <div key={movie.id}>
+              <img
+                src={getImageUrl(movie.poster_path)}
+                alt={movie.title}
+                width="200"
+              />
               <h2>{movie.title}</h2>
               <p>Titolo Originale: {movie.original_title}</p>
               <p>
@@ -96,6 +104,11 @@ function App() {
         {Array.isArray(series) && series.length > 0 ? (
           series.map((serie) => (
             <div key={serie.id}>
+              <img
+                src={getImageUrl(serie.poster_path)}
+                alt={serie.name}
+                width="200"
+              />
               <h2>{serie.name}</h2>
               <p>Titolo Originale: {serie.orginal_name}</p>
               <p>
