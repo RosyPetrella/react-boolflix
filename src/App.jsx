@@ -13,6 +13,11 @@
 // 3.  Lingua
 // 4.  Voto
 
+// Milestone 2:
+// Trasformiamo la stringa statica della lingua in una vera e propria bandiera della
+// nazione corrispondente, gestendo il caso in cui non abbiamo la bandiera della
+// nazione ritornata dall’API (le flag non ci sono in FontAwesome).
+
 import { useState } from "react";
 
 function App() {
@@ -29,6 +34,24 @@ function App() {
       .then((data) => setMovies(data.results))
       .catch((error) => console.error("Errore nella ricerca:", error));
   };
+
+  const flags = {
+    en: "🇬🇧",
+    it: "🇮🇹",
+    fr: "🇫🇷",
+    es: "🇪🇸",
+    de: "🇩🇪",
+    ja: "🇯🇵",
+    zh: "🇨🇳",
+    ko: "🇰🇷",
+    ru: "🇷🇺",
+    hi: "🇮🇳",
+    // Aggiungi altre lingue se vuoi
+  };
+
+  function getFlag(langCode) {
+    return flags[langCode] || "🏳️"; // bandiera bianca se non trovata
+  }
 
   return (
     <div>
@@ -50,7 +73,10 @@ function App() {
             <div key={movie.id}>
               <h2>{movie.title}</h2>
               <p>Titolo Originale: {movie.original_title}</p>
-              <p>Lingua: {movie.original_language}</p>
+              <p>
+                Lingua: {getFlag(movie.original_language)} (
+                {movie.original_language})
+              </p>
               <p>Voto: {movie.vote_average}</p>
             </div>
           ))
