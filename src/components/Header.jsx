@@ -1,6 +1,6 @@
 import SearchBar from "./SearchBar";
 
-export default function Header() {
+export default function Header({ setMovies, setSeries }) {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
@@ -25,7 +25,7 @@ export default function Header() {
           id="navbarSupportedContent"
         ></div>
         <div>
-          <SearchBar />
+          <SearchBar setMovies={setMovies} setSeries={setSeries} />
         </div>
       </div>
     </nav>
