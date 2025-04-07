@@ -1,1 +1,11 @@
 @import "bootstrap";
+
+.logo {
+  font-family: "Bebas Neue", sans-serif; /* o Impact / Arial Black / sans-serif */
+  font-size: 60px;
+  color: #e50914; /* rosso Netflix */
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  margin: 20px 0;
+}
