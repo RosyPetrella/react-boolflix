@@ -77,56 +77,50 @@ export default function Card({ movies, series }) {
 
   return (
     <div className="cards-container">
-      <div className="movies-grid">
-        {Array.isArray(movies) && movies.length > 0 ? (
-          movies.map((movie) => (
-            <div key={movie.id} className="card">
-              <img
-                src={getImageUrl(movie.poster_path)}
-                alt={movie.title}
-                width="200"
-              />
-              <div className="card-overlay">
-                <h2>{movie.title}</h2>
-                <p>Titolo Originale: {movie.original_title}</p>
-                <p>
-                  Lingua: {getFlag(movie.original_language)} (
-                  {movie.original_language})
-                </p>
-                <p>Voto: {renderStars(movie.vote_average)} </p>
+      {movies && movies.length > 0 && (
+        <>
+          <h2 className="section-title">Film</h2>
+          <div className="movies-grid">
+            {movies.map((movie) => (
+              <div key={movie.id} className="card">
+                <img src={getImageUrl(movie.poster_path)} alt={movie.title} />
+                <div className="card-overlay">
+                  <h2>{movie.title}</h2>
+                  <p>Titolo Originale: {movie.original_title}</p>
+                  <p>
+                    Lingua: {getFlag(movie.original_language)} (
+                    {movie.original_language})
+                  </p>
+                  <p>Voto: {renderStars(movie.vote_average)}</p>
+                  <p className="overview">{movie.overview}</p>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p>Nessun film trovato.</p>
-        )}
-      </div>
-
-      <div className="series-grid">
-        {Array.isArray(series) && series.length > 0 ? (
-          series.map((serie) => (
-            <div key={serie.id} className="card">
-              <img
-                src={getImageUrl(serie.poster_path)}
-                alt={serie.name}
-                width="200"
-              />
-              <div className="card-overlay">
-                <h2>{serie.name}</h2>
-                <p>Titolo Originale: {serie.orginal_name}</p>
-                <p>
-                  Lingua: {getFlag(serie.original_language)} (
-                  {serie.original_language})
-                </p>
-                <p>Voto: {renderStars(serie.vote_average)} </p>
-                <p className="overview">{serie.overview}</p>
+            ))}
+          </div>
+        </>
+      )}
+      {series && series.length > 0 && (
+        <>
+          <h2 className="section-title">Serie TV</h2>
+          <div className="series-grid">
+            {series.map((serie) => (
+              <div key={serie.id} className="card">
+                <img src={getImageUrl(serie.poster_path)} alt={serie.name} />
+                <div className="card-overlay">
+                  <h2>{serie.name}</h2>
+                  <p>Titolo Originale: {serie.original_name}</p>
+                  <p>
+                    Lingua: {getFlag(serie.original_language)} (
+                    {serie.original_language})
+                  </p>
+                  <p>Voto: {renderStars(serie.vote_average)}</p>
+                  <p className="overview">{serie.overview}</p>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p>Nessuna serie trovata.</p>
-        )}
-      </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
