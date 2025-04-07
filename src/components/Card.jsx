@@ -22,7 +22,7 @@ export default function Card({ movies, series }) {
   };
 
   const convertRating = (rating) => {
-    return Math.ceil(rating / 2); // Arrotonda per eccesso
+    return Math.ceil(rating / 2);
   };
 
   // Funzione per mostrare le stelle
@@ -50,6 +50,31 @@ export default function Card({ movies, series }) {
     return stars;
   };
 
+  const renderCard = (item, isMovie = true) => {
+    const title = isMovie ? item.title : item.name;
+    const originalTitle = isMovie ? item.original_title : item.original_name;
+
+    return (
+      <div
+        key={item.id}
+        className="card"
+        style={{
+          backgroundImage: `url(${getImageUrl(item.poster_path)})`,
+        }}
+      >
+        <div className="card-overlay">
+          <h2>{title}</h2>
+          <p>Titolo Originale: {originalTitle}</p>
+          <p>
+            Lingua: {getFlag(item.original_language)} ({item.original_language})
+          </p>
+          <p>Voto: {renderStars(item.vote_average)}</p>
+          <p className="overview">{item.overview}</p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="cards-container">
       <div className="movies-grid">
@@ -61,13 +86,15 @@ export default function Card({ movies, series }) {
                 alt={movie.title}
                 width="200"
               />
-              <h2>{movie.title}</h2>
-              <p>Titolo Originale: {movie.original_title}</p>
-              <p>
-                Lingua: {getFlag(movie.original_language)} (
-                {movie.original_language})
-              </p>
-              <p>Voto: {renderStars(movie.vote_average)} </p>
+              <div className="card-overlay">
+                <h2>{movie.title}</h2>
+                <p>Titolo Originale: {movie.original_title}</p>
+                <p>
+                  Lingua: {getFlag(movie.original_language)} (
+                  {movie.original_language})
+                </p>
+                <p>Voto: {renderStars(movie.vote_average)} </p>
+              </div>
             </div>
           ))
         ) : (
@@ -78,19 +105,22 @@ export default function Card({ movies, series }) {
       <div className="series-grid">
         {Array.isArray(series) && series.length > 0 ? (
           series.map((serie) => (
-            <div key={serie.id}>
+            <div key={serie.id} className="card">
               <img
                 src={getImageUrl(serie.poster_path)}
                 alt={serie.name}
                 width="200"
               />
-              <h2>{serie.name}</h2>
-              <p>Titolo Originale: {serie.orginal_name}</p>
-              <p>
-                Lingua: {getFlag(serie.original_language)} (
-                {serie.original_language})
-              </p>
-              <p>Voto: {renderStars(serie.vote_average)} </p>
+              <div className="card-overlay">
+                <h2>{serie.name}</h2>
+                <p>Titolo Originale: {serie.orginal_name}</p>
+                <p>
+                  Lingua: {getFlag(serie.original_language)} (
+                  {serie.original_language})
+                </p>
+                <p>Voto: {renderStars(serie.vote_average)} </p>
+                <p className="overview">{serie.overview}</p>
+              </div>
             </div>
           ))
         ) : (
