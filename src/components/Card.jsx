@@ -1,4 +1,9 @@
-export default function Card({ movies, series }) {
+import { useContext } from "react";
+import { MovieContext } from "../contexts/movieContext";
+
+export default function Card() {
+  const { movies, series } = useContext(MovieContext);
+
   const flags = {
     en: "🇬🇧",
     it: "🇮🇹",

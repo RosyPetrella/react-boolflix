@@ -1,6 +1,9 @@
 import { useState } from "react";
-export default function SearchBar({ setMovies, setSeries }) {
+import { useContext } from "react";
+import { MovieContext } from "../contexts/movieContext";
+export default function SearchBar() {
   const [query, setQuery] = useState("");
+  const { setMovies, setSeries } = useContext(MovieContext);
 
   const search = () => {
     const api_key = import.meta.env.VITE_MOVIE_DB_API_KEY; // 👈recupera la chiave dal file .env
